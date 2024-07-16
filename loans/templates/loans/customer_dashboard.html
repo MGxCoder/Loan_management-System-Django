@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Dashboard</title>
+</head>
+<body>
+    <h1>Customer Dashboard</h1>
+    <a href="{% url 'apply_loan' %}">Apply for Loan</a>
+    <h2>Your Applications</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Loan Amount</th>
+                <th>Status</th>
+                <th>Application Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.loan_amount }}</td>
+                <td>{{ application.get_status_display }}</td>
+                <td>{{ application.application_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
