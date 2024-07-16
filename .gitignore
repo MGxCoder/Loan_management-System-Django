@@ -1,0 +1,34 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+
+# Environments
+.env
+*.env
+.venv/
+venv/
+ENV/
+env/
+venv.bak/
+
+# Python
+*.py[cod]
+*$py.class
+__pycache__/
+*.so
+
+# Editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
