@@ -1,29 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Applications Dashboard</title>
+   
 </head>
+<style>
+    header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    th, td {
+        padding: 0.5rem;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+    </style>
+
 <body>
-    <h1>Admin Dashboard</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Loan Amount</th>
-                <th>Status</th>
-                <th>Application Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in applications %}
-            <tr>
-                <td>{{ application.user.username }}</td>
-                <td>{{ application.loan_amount }}</td>
-                <td>{{ application.get_status_display }}</td>
-                <td>{{ application.application_date }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <header>
+        <h1>Loan Applications Dashboard</h1>
+    </header>
+
+    <main>
+        <table id="loanTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Contact No</th>
+                    <th>City</th>
+                    <th>CIBIL Score</th>
+                    <th>Income</th>
+                    <th>Employment Status</th>
+                    <th>Loan Term</th>
+                    <th>Loan Amount</th>
+                    <th>Residential Assets</th>
+                    <th>Commercial Assets</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be inserted here dynamically -->
+                <tr>
+
+                   
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <script >
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch data from your server (replace with your API endpoint)
+            fetch('/api/loanApplications')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#loanTable tbody');
+                    data.forEach(application => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${application.name}</td>
+                            <td>${application.age}</td>
+                            <td>${application.contact_no}</td>
+                            <td>${application.city}</td>
+                            <td>${application.cibil_score}</td>
+                            <td>${application.income}</td>
+                            <td>${application.employment_status}</td>
+                            <td>${application.loan_term}</td>
+                            <td>${application.loan_amount}</td>
+                            <td>${application.residential_assets}</td>
+                            <td>${application.commercial_assets}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch data from your server (replace with your API endpoint)
+            fetch('/api/loanApplications')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#loanTable tbody');
+                    data.forEach(application => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${application.name}</td>
+                            <td>${application.age}</td>
+                            <!-- Repeat for other fields -->
+                            <td>
+                                <button class="approve-btn" data-id="${application.id}">Approve</button>
+                                <button class="reject-btn" data-id="${application.id}">Reject</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+        
+                    // Add event listeners for approve and reject buttons
+                    document.querySelectorAll('.approve-btn').forEach(button => {
+                        button.addEventListener('click', handleApproval);
+                    });
+        
+                    document.querySelectorAll('.reject-btn').forEach(button => {
+                        button.addEventListener('click', handleRejection);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+        
+        function handleApproval(event) {
+            const applicationId = event.target.getAttribute('data-id');
+            // Implement logic to update database (e.g., set status to "Approved")
+            console.log(`Application ${applicationId} approved.`);
+        }
+        
+        function handleRejection(event) {
+            const applicationId = event.target.getAttribute('data-id');
+            // Implement logic to update database (e.g., set status to "Rejected")
+            console.log(`Application ${applicationId} rejected.`);
+        }
+        
+    </script>
 </body>
 </html>
