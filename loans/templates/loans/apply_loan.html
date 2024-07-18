@@ -1,55 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Apply for Loan</title>
-
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Application Form</title>
     <style>
-      body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    color: #333;
-    text-align: center;
-    margin-top: 20px;
-}
-
-form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-      </style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #7f00ff;
+        }
+        .form-container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 50px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        select {
+            height: 36px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #7f00ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6f00e0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Apply for Loan</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+    <h1>Loan Application Form</h1>
+    <div class="form-container">
+        <form id="loanForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required min="18">
+
+            <label for="contact_no">Contact No:</label>
+            <input type="tel" id="contact_no" name="contact_no" required>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="cibil_score">Cibil Score:</label>
+            <input type="number" id="cibil_score" name="cibil_score" required>
+
+            <label for="income">Income:</label>
+            <input type="number" id="income" name="income" required>
+
+            <label for="employment_status">Employment Status:</label>
+            <select id="employment_status" name="employment_status" required>
+                <option value="employed">Employed</option>
+                <option value="unemployed">Unemployed</option>
+                <option value="retired">Retired</option>
+            </select>
+
+            <label for="loan_term">Loan Term (months):</label>
+            <input type="number" id="loan_term" name="loan_term" required>
+
+            <label for="loan_amount">Loan Amount:</label>
+            <input type="number" id="loan_amount" name="loan_amount" required>
+
+            <label for="residential_assets">Residential Assets:</label>
+            <input type="text" id="residential_assets" name="residential_assets" required>
+
+            <label for="commercial_assets">Commercial Assets:</label>
+            <input type="text" id="commercial_assets" name="commercial_assets" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('loanForm');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent form submission
+
+                const name = document.getElementById('name').value;
+                const age = parseInt(document.getElementById('age').value);
+
+                if (age < 18) {
+                    alert('Applicant must be at least 18 years old.');
+                    return;
+                }
+
+                // You can handle form submission here (e.g., send data to server)
+                // For database interaction, you'll need a server-side component
+                // that connects to SQLite3 and inserts data.
+
+                // Example: Send data to server using fetch API
+                try {
+                    const response = await fetch('/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name, age }),
+                    });
+
+                    if (response.ok) {
+                        console.log('Data submitted successfully!');
+                    } else {
+                        console.error('Error submitting data:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error:', error.message);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
